@@ -20,12 +20,14 @@ namespace YandexTank.PhantomAmmo
         public string Body { get; set; }
 
         public string Status { get; set; } = "good";
+
+        public string Protocol { get; set; } = "HTTP/1.0";
         
         public string[] Headers { get; set; }
         
         public override string ToString()
         {
-            var result = $"{Method} {Url} HTTP/1.0\r\n";
+            var result = $"{Method} {Url} {Protocol}\r\n";
             
             if (Headers != null
                 && Headers.Length > 0)
