@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+
+        <PackageId>YandexTank.PhantomAmmo.AspNetCore</PackageId>
+        <Version>0.1.0</Version>
+        <Authors>Kirill Amurskiy</Authors>
+        <Company>Amursoft</Company>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+      <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
+      <PackageReference Include="YandexTank.PhantomAmmo" Version="0.2.1" />
+    </ItemGroup>
+
+</Project>

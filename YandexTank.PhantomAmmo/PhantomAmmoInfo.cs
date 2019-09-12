@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace YandexTank.PhantomAmmo
 {
     public class PhantomAmmoInfo
@@ -23,16 +26,15 @@ namespace YandexTank.PhantomAmmo
 
         public string Protocol { get; set; } = "HTTP/1.0";
         
-        public string[] Headers { get; set; }
+        public Dictionary<string,string> Headers { get; } = new Dictionary<string, string>();
         
         public override string ToString()
         {
             var result = $"{Method} {Url} {Protocol}\r\n";
             
-            if (Headers != null
-                && Headers.Length > 0)
+            if (Headers.Count > 0)
             {
-                result += string.Join("\r\n", Headers) + "\r\n";
+                result += string.Join("\r\n", Headers.Select(h => $"{h.Key}: {h.Value}")) + "\r\n";
             }
             else
             {
@@ -41,10 +43,14 @@ namespace YandexTank.PhantomAmmo
             
             if (!string.IsNullOrEmpty(Body))
             {
-                result += $"Content-Length: {Body.Length}\r\n" +
-                          "\r\n" +
-                          $"{Body}";
+                if (!Headers.ContainsKey("Content-Length"))
+                {
+                    result += $"Content-Length: {Body.Length}\r\n";    
+                }
+
+                result += $"\r\n{Body}";
             }
+            
             result += "\r\n";
             
             var len = result.Length;

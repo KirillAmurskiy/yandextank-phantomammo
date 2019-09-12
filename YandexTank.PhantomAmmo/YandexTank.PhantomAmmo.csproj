@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
 
         <PackageId>YandexTank.PhantomAmmo</PackageId>
-        <Version>0.2.0</Version>
+        <Version>0.2.1</Version>
         <Authors>Kirill Amurskiy</Authors>
         <Company>Amursoft</Company>
     </PropertyGroup>
