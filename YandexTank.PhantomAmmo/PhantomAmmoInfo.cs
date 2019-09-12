@@ -27,11 +27,14 @@ namespace YandexTank.PhantomAmmo
         {
             var result = $"{Method} {Url} HTTP/1.0\r\n";
             
-            result += "User-Agent: xxx (shell 1)\r\n";
             if (Headers != null
                 && Headers.Length > 0)
             {
                 result += string.Join("\r\n", Headers) + "\r\n";
+            }
+            else
+            {
+                result += "User-Agent: xxx (shell 1)\r\n";    
             }
             
             if (!string.IsNullOrEmpty(Body))
