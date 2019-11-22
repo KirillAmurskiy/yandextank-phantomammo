@@ -35,6 +35,7 @@ namespace AspNetCore3App
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UsePhantomAmmoCollector();
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

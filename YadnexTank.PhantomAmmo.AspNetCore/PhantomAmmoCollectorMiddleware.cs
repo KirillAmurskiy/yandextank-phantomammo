@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -30,42 +31,54 @@ namespace YadnexTank.PhantomAmmo.AspNetCore
  
         public async Task InvokeAsync(HttpContext context)
         {
+            await next.Invoke(context);
+
             var opts = optsAccessor.CurrentValue;
             if (opts.Enabled)
             {
                 try
                 {
-                    await CollectRequest(context.Request, opts.PathToFile);
+                    var ammo = await MakeAmmo(context);
+                    await StoreAmmo(ammo, opts.PathToFile);
                 }
                 catch (Exception e)
                 {
                     logger.LogWarning(e, e.Message);
                 }
             }
-		    
-            await next.Invoke(context);
         }
 
-        private async Task CollectRequest(HttpRequest request, string pathToFile)
+        private async Task<PhantomAmmoInfo> MakeAmmo(HttpContext context)
+        {
+            var request = context.Request;
+            request.EnableBuffering();
+            
+            var url = request.GetEncodedUrl();
+            var ammoInfo = new PhantomAmmoInfo(url, request.Method)
+            {
+                Body = await ExtractBody(request),
+                Protocol = request.Protocol,
+                Status = GetResponseStatus(context.Response.StatusCode)
+            };
+            foreach (var h in request.Headers)
+            {
+                ammoInfo.Headers.Add(h.Key, h.Value);
+            }
+
+            return ammoInfo;
+        }
+
+        private string GetResponseStatus(int statusCode) =>
+            statusCode > 199 && statusCode < 300
+                ? "good"
+                : "bad";
+        
+
+        private async Task StoreAmmo(PhantomAmmoInfo ammoInfo, string pathToFile)
         {
             using (var file = File.AppendText(pathToFile))
             {
-                var url = request.GetEncodedUrl();
-
-                //request.EnableRewind();
-                request.EnableBuffering();
-
-                var ammoInfo = new PhantomAmmoInfo(url, request.Method)
-                {
-                    Body = await ExtractBody(request),
-                    Protocol = request.Protocol
-                };
-                foreach (var h in request.Headers)
-                {
-                    ammoInfo.Headers.Add(h.Key, h.Value);
-                }
-
-                file.Write(ammoInfo.ToString());
+                await file.WriteAsync(ammoInfo.ToString());
             }
         }
 

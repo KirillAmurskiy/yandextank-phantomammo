@@ -35,5 +35,31 @@ namespace AspNetCore3App.Controllers
                 })
                 .ToArray();
         }
+        
+        [HttpPost]
+        public PostArgs Post(PostArgs args)
+        {
+            return args;
+        }
+        
+        [HttpPut]
+        public PutArgs Put(PutArgs args)
+        {
+            return args;
+        }
+    }
+
+    public class PostArgs
+    {
+        public int Arg1 { get; set; }
+        
+        public string Arg2 { get; set; }
+    }
+    
+    public class PutArgs
+    {
+        public int Arg1 { get; set; }
+        
+        public string Arg2 { get; set; }
     }
 }

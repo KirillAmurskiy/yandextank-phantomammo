@@ -4,6 +4,16 @@ GET http://localhost:5000/weatherforecast
 
 ### AspNetCore3
 
+POST http://localhost:5001/weatherforecast
+Content-Type: application/json
+
+{
+"Arg1":"pizdec",
+"Arg2":"Trista"
+}
+
+###
+
 GET http://localhost:5001/weatherforecast
 
 ###
