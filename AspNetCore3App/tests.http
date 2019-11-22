@@ -8,8 +8,8 @@ POST http://localhost:5001/weatherforecast
 Content-Type: application/json
 
 {
-"Arg1":"pizdec",
-"Arg2":"Trista"
+"Arg1":3,
+"Arg2":"exception"
 }
 
 ###

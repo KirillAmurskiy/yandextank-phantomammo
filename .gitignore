@@ -17,7 +17,7 @@ Db/Backup/
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 yandex-tank-token.txt
-ammo.txt
+ammo*.txt
 
 # Build results
 [Dd]ebug/

@@ -39,6 +39,10 @@ namespace AspNetCore3App.Controllers
         [HttpPost]
         public PostArgs Post(PostArgs args)
         {
+            if (args.Arg2 == "exception")
+            {
+                throw new Exception("Hello exception!");
+            }
             return args;
         }
         

@@ -22,7 +22,7 @@ namespace YandexTank.PhantomAmmo
         
         public string Body { get; set; }
 
-        public string Status { get; set; } = "good";
+        public string Status { get; set; } = PhantomAmmoStatuses.Good;
 
         public string Protocol { get; set; } = "HTTP/1.0";
         
