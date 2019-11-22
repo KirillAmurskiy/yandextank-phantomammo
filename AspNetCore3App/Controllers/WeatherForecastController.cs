@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -24,30 +25,35 @@ namespace AspNetCore3App.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public ActionResult<IEnumerable<WeatherForecast>> Get()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var result = Enumerable.Range(1, 5).Select(index => new WeatherForecast
                 {
                     Date = DateTime.Now.AddDays(index),
                     TemperatureC = rng.Next(-20, 55),
                     Summary = Summaries[rng.Next(Summaries.Length)]
                 })
                 .ToArray();
+            return Ok(result);
         }
         
         [HttpPost]
-        public PostArgs Post(PostArgs args)
+        public ActionResult<PostArgs> Post(PostArgs args)
         {
             if (args.Arg2 == "exception")
             {
                 throw new Exception("Hello exception!");
             }
+            else if (args.Arg2 == "exception1")
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
             return args;
         }
         
         [HttpPut]
-        public PutArgs Put(PutArgs args)
+        public ActionResult<PutArgs> Put(PutArgs args)
         {
             return args;
         }

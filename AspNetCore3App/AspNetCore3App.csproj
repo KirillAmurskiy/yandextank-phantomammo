@@ -9,8 +9,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Amursoft.AspNetCore.ErrorHandling" Version="0.2.1" />
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
     </ItemGroup>
 
 </Project>

@@ -36,74 +36,83 @@ namespace YadnexTank.PhantomAmmo.AspNetCore
                 return;
             }
 
-            context.Request.EnableBuffering();
-
+            PhantomAmmoInfo ammo = null;
             try
             {
+                ammo = await MakeAmmo(context.Request);
                 await next.Invoke(context);
-                await StoreRequest(context.Request, context.Response.StatusCode, opts);
+                await StoreAmmo(ammo, context.Response.StatusCode, opts);
             }
             catch (Exception)
             {
-                await StoreRequest(context.Request, -1, opts);
+                await StoreAmmo(ammo, -1, opts);
                 throw;
             }
         }
 
-        private async Task StoreRequest(HttpRequest request, int responseStatusCode, PhantomAmmoCollectorOptions opts)
+        
+        private async Task<PhantomAmmoInfo> MakeAmmo(HttpRequest request)
         {
             try
             {
-                var ammo = await MakeAmmo(request, responseStatusCode);
-                await StoreAmmo(ammo, opts);
+                var url = request.GetEncodedUrl();
+                var ammoInfo = new PhantomAmmoInfo(url, request.Method)
+                {
+                    Body = await ExtractBody(request),
+                    Protocol = request.Protocol
+                };
+                foreach (var h in request.Headers)
+                {
+                    ammoInfo.Headers.Add(h.Key, h.Value);
+                }
+                return ammoInfo;
+            }
+            catch (Exception e)
+            {
+                logger.LogWarning(e, e.Message);
+                return null;
+            }
+        }
+        
+
+        private async Task StoreAmmo(PhantomAmmoInfo ammo, int responseStatusCode, PhantomAmmoCollectorOptions opts)
+        {
+            if (ammo == null)
+            {
+                return;
+            }
+
+            try
+            {
+                ammo.Status = GetResponseStatus(responseStatusCode);
+            
+                if (!string.IsNullOrWhiteSpace(opts.AllRequestsFile))
+                {
+                    using (var file = File.AppendText(opts.AllRequestsFile))
+                    {
+                        await file.WriteAsync(ammo.ToString());
+                    }    
+                }
+                if (!string.IsNullOrWhiteSpace(opts.GoodRequestsFile)
+                    && ammo.Status == PhantomAmmoStatuses.Good)
+                {
+                    using (var file = File.AppendText(opts.GoodRequestsFile))
+                    {
+                        await file.WriteAsync(ammo.ToString());
+                    }    
+                }
+                else if (!string.IsNullOrWhiteSpace(opts.BadRequestsFile))
+                {
+                    using (var file = File.AppendText(opts.BadRequestsFile))
+                    {
+                        await file.WriteAsync(ammo.ToString());
+                    }    
+                }
             }
             catch (Exception e)
             {
                 logger.LogWarning(e, e.Message);
             }
-        }
-
-        private async Task StoreAmmo(PhantomAmmoInfo ammoInfo, PhantomAmmoCollectorOptions opts)
-        {
-            if (!string.IsNullOrWhiteSpace(opts.AllRequestsFile))
-            {
-                using (var file = File.AppendText(opts.AllRequestsFile))
-                {
-                    await file.WriteAsync(ammoInfo.ToString());
-                }    
-            }
-            
-            if (!string.IsNullOrWhiteSpace(opts.GoodRequestsFile)
-                && ammoInfo.Status == PhantomAmmoStatuses.Good)
-            {
-                using (var file = File.AppendText(opts.GoodRequestsFile))
-                {
-                    await file.WriteAsync(ammoInfo.ToString());
-                }    
-            }
-            else if (!string.IsNullOrWhiteSpace(opts.BadRequestsFile))
-            {
-                using (var file = File.AppendText(opts.BadRequestsFile))
-                {
-                    await file.WriteAsync(ammoInfo.ToString());
-                }    
-            }
-        }
-
-        private async Task<PhantomAmmoInfo> MakeAmmo(HttpRequest request, int responseStatusCode)
-        {
-            var url = request.GetEncodedUrl();
-            var ammoInfo = new PhantomAmmoInfo(url, request.Method)
-            {
-                Body = await ExtractBody(request),
-                Protocol = request.Protocol,
-                Status = GetResponseStatus(responseStatusCode)
-            };
-            foreach (var h in request.Headers)
-            {
-                ammoInfo.Headers.Add(h.Key, h.Value);
-            }
-            return ammoInfo;
         }
 
         private string GetResponseStatus(int statusCode) =>
@@ -113,11 +122,17 @@ namespace YadnexTank.PhantomAmmo.AspNetCore
         
         private async Task<string> ExtractBody(HttpRequest request)
         {
+            request.EnableBuffering();
+            
             request.Body.Seek(0, SeekOrigin.Begin);
             
             var reader = new StreamReader(request.Body);
 
-            return await reader.ReadToEndAsync();
+            var body = await reader.ReadToEndAsync();
+            
+            request.Body.Seek(0, SeekOrigin.Begin);
+            
+            return body;
         }
     }
 }

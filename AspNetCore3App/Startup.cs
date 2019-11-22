@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amursoft.AspNetCore.ErrorHandling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,9 @@ namespace AspNetCore3App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+                //.AddNewtonsoftJson();
+            
+            services.AddValidationProblemHandling();
 
             services.AddPhantomAmmoCollector(Configuration.GetSection("PhantomAmmoCollector"));
         }
@@ -34,7 +38,9 @@ namespace AspNetCore3App
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //app.UseExceptionHandling();
             app.UsePhantomAmmoCollector();
+            
             
             app.UseRouting();
 
