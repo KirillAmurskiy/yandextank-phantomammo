@@ -1,0 +1,9 @@
+### AspNetCore2
+
+GET http://localhost:5000/weatherforecast
+
+### AspNetCore3
+
+GET http://localhost:5001/weatherforecast
+
+###

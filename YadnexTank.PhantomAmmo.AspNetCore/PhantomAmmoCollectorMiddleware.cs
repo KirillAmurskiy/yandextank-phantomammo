@@ -52,7 +52,8 @@ namespace YadnexTank.PhantomAmmo.AspNetCore
             {
                 var url = request.GetEncodedUrl();
 
-                request.EnableRewind();
+                //request.EnableRewind();
+                request.EnableBuffering();
 
                 var ammoInfo = new PhantomAmmoInfo(url, request.Method)
                 {

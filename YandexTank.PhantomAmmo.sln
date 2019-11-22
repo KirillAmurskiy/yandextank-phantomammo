@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YandexTank.PhantomAmmo", "Y
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YadnexTank.PhantomAmmo.AspNetCore", "YadnexTank.PhantomAmmo.AspNetCore\YadnexTank.PhantomAmmo.AspNetCore.csproj", "{5E98A93F-6016-4C72-ACC5-0DD19E6E14F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore3App", "AspNetCore3App\AspNetCore3App.csproj", "{23D49E9C-F3AB-4A14-877F-F5A2F1C8096A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore2App", "AspNetCore2App\AspNetCore2App.csproj", "{E5B73BD0-E0CC-46A4-AD4B-DF63E28D1B8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{5E98A93F-6016-4C72-ACC5-0DD19E6E14F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E98A93F-6016-4C72-ACC5-0DD19E6E14F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E98A93F-6016-4C72-ACC5-0DD19E6E14F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23D49E9C-F3AB-4A14-877F-F5A2F1C8096A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23D49E9C-F3AB-4A14-877F-F5A2F1C8096A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23D49E9C-F3AB-4A14-877F-F5A2F1C8096A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23D49E9C-F3AB-4A14-877F-F5A2F1C8096A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5B73BD0-E0CC-46A4-AD4B-DF63E28D1B8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5B73BD0-E0CC-46A4-AD4B-DF63E28D1B8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5B73BD0-E0CC-46A4-AD4B-DF63E28D1B8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5B73BD0-E0CC-46A4-AD4B-DF63E28D1B8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
