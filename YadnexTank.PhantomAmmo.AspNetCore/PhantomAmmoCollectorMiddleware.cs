@@ -55,7 +55,7 @@ namespace YadnexTank.PhantomAmmo.AspNetCore
         {
             try
             {
-                var url = request.GetEncodedUrl();
+                var url = request.GetEncodedPathAndQuery();
                 var ammoInfo = new PhantomAmmoInfo(url, request.Method)
                 {
                     Body = await ExtractBody(request),

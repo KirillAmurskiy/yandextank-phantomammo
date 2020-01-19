@@ -1,10 +1,10 @@
 ### AspNetCore2
 
-GET http://localhost:5000/weatherforecast
+GET http://localhost:5012/weatherforecast
 
 ### AspNetCore3
 
-POST http://localhost:5001/weatherforecast
+POST http://localhost:5000/weatherforecast
 Content-Type: application/json
 
 {
