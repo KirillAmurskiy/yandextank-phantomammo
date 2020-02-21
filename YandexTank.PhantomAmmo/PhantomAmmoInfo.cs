@@ -12,14 +12,19 @@ namespace YandexTank.PhantomAmmo
             Method = method;
         }
 
-        public static PhantomAmmoInfo MakeGet(string url)
+        public static PhantomAmmoInfo MakeGet(string url, string query)
         {
-            return new PhantomAmmoInfo(url, "GET");
+            return new PhantomAmmoInfo(url, "GET")
+            {
+                Query = query
+            };
         }
         
         public string Method { get; }
         
         public string Url { get; } 
+        
+        public string Query { get; set; }
         
         public string Body { get; set; }
 
@@ -31,8 +36,18 @@ namespace YandexTank.PhantomAmmo
         
         public override string ToString()
         {
-            var encodedUrl = UrlEncoder.Default.Encode(Url);
-            var result = $"{Method} {encodedUrl} {Protocol}\r\n";
+            string result;
+
+            if (!string.IsNullOrEmpty(Query))
+            {
+                var encodedQuery = UrlEncoder.Default.Encode(Query);
+                result = $"{Method} {Url}?{encodedQuery} {Protocol}\r\n";    
+            }
+            else
+            {
+                result = $"{Method} {Url} {Protocol}\r\n";
+            }
+            
             
             if (Headers.Count > 0)
             {
