@@ -12,11 +12,11 @@ namespace YandexTank.PhantomAmmo
             Method = method;
         }
 
-        public static PhantomAmmoInfo MakeGet(string url, string query)
+        public static PhantomAmmoInfo MakeGet(string url, Dictionary<string,string> queryParams)
         {
             return new PhantomAmmoInfo(url, "GET")
             {
-                Query = query
+                QueryParams = queryParams
             };
         }
         
@@ -24,7 +24,7 @@ namespace YandexTank.PhantomAmmo
         
         public string Url { get; } 
         
-        public string Query { get; set; }
+        public Dictionary<string,string> QueryParams { get; set; }
         
         public string Body { get; set; }
 
@@ -38,10 +38,10 @@ namespace YandexTank.PhantomAmmo
         {
             string result;
 
-            if (!string.IsNullOrEmpty(Query))
+            if (QueryParams != null && QueryParams.Any())
             {
-                var encodedQuery = UrlEncoder.Default.Encode(Query);
-                result = $"{Method} {Url}?{encodedQuery} {Protocol}\r\n";    
+                var query = string.Join("&", QueryParams.Select(x => $"{x.Key}={UrlEncoder.Default.Encode(x.Value)}"));
+                result = $"{Method} {Url}?{query} {Protocol}\r\n";    
             }
             else
             {
