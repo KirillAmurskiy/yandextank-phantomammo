@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Encodings.Web;
 
 namespace YandexTank.PhantomAmmo
 {
@@ -30,7 +31,8 @@ namespace YandexTank.PhantomAmmo
         
         public override string ToString()
         {
-            var result = $"{Method} {Url} {Protocol}\r\n";
+            var encodedUrl = UrlEncoder.Default.Encode(Url);
+            var result = $"{Method} {encodedUrl} {Protocol}\r\n";
             
             if (Headers.Count > 0)
             {
